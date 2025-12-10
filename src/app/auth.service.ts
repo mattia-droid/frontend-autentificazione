@@ -8,7 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 })
 export class AuthService {
   // SOSTITUISCI QUESTO URL CON L'ENDPOINT DEL TUO COLLEGA
-  private apiUrl = 'http://localhost:5001/api/auth/login'; 
+  private apiUrl = 'https://localhost:5001/api/auth/login'; 
   private _isLogged = false;
   get isLogged() { return this._isLogged; }
   setLogged(value: boolean) { this._isLogged = value; }

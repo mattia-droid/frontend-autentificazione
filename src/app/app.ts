@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
   template: `<router-outlet></router-outlet>`, 
   styleUrls: ['./app.scss'],
   // 3. Rimuovi LoginComponent dall'array imports, lascia solo RouterOutlet
-  imports: [RouterOutlet, HttpClientModule] 
+  imports: [RouterOutlet] 
 })
 export class App {
   protected readonly title = signal('login');
