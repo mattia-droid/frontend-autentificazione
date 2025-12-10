@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
@@ -22,25 +22,34 @@ export class LoginComponent {
   ) {}
 
   onSubmit() {
-    // Validazione semplice: richiedi username e password
-    if (!this.username || !this.username.trim() || !this.password) {
+    // Validazione dettagliata: controlla username e password singolarmente
+    const usernameEmpty = !this.username || !this.username.trim();
+    const passwordEmpty = !this.password;
+
+    if (usernameEmpty && passwordEmpty) {
       this.errorMessage = 'Inserisci username e password.';
+      return;
+    }
+
+    if (usernameEmpty) {
+      this.errorMessage = 'Inserisci l\'username.';
+      return;
+    }
+
+    if (passwordEmpty) {
+      this.errorMessage = 'Inserisci la password.';
       return;
     }
 
     // reset messaggio precedente
     this.errorMessage = null;
 
-    this.authService.login(this.username, this.password).subscribe({
-      next: (response) => {
-        // Supponendo che 'response' contenga un token o una conferma di successo
-        console.log('Login riuscito:', response);
-        // Reindirizza l'utente alla pagina protetta
+     this.authService.login(this.username, this.password).subscribe(result => {
+      if (result.success) {
+        this.authService.setLogged(true);
         this.router.navigate(['/dashboard']);
-      },
-      error: (err) => {
-        console.error('Errore di login:', err);
-        this.errorMessage = 'Credenziali non valide. Riprova.';
+      } else {
+        this.errorMessage = result.message || 'Credenziali non valide. Riprova.';
       }
     });
   }
