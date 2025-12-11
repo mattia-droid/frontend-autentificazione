@@ -1,5 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+<<<<<<< HEAD
+=======
+
+>>>>>>> a2d2a0ae81bfb7e6737d9a8430a1ecb837f2ffcc
 
 @Component({
   selector: 'app-root',
