@@ -15,17 +15,21 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<{ success: boolean; message?: string }> {
+  login(username: string, password: string): Observable<{token?:string; message?: string }> {
     return this.http.post<any>(this.apiUrl, { username, password }).pipe(
       map(body => {
-        // Il backend ritorna { success: true } o { authenticated: true } o simile
-        const success = !!(body && (body.success || body.authenticated || body.ok || body.auth));
-        const message = body?.message || body?.error || undefined;
-        return { success, message };
-      }),
-      catchError(err => {
-    let errorMsg = 'Errore di rete';
+const token = body?.token;
 
+      if (token) {
+        localStorage.setItem('jwt', token);
+        this._isLogged = true;
+        return { token };
+      }
+
+      return { message: 'Token mancante nella risposta' };
+    }),
+    catchError(err => {
+      let errorMsg = 'Errore di connessione al server';
     // se arriva un 400 con JSON: { error: "..."}
     if (err.status === 400 && err.error?.error) {
         errorMsg = err.error.error;
@@ -40,7 +44,7 @@ export class AuthService {
     else if (err.error?.message) {
         errorMsg = err.error.message;
     }
-        return of({ success: false, message: errorMsg });
+        return of({message: errorMsg });
       })
     );
   }

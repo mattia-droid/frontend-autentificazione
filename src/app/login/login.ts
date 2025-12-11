@@ -45,7 +45,7 @@ export class LoginComponent {
     this.errorMessage = null;
 
      this.authService.login(this.username, this.password).subscribe(result => {
-      if (result.success) {
+      if (result.token) {
         this.authService.setLogged(true);
         this.router.navigate(['/dashboard']);
       } else {

@@ -1,0 +1,79 @@
+.dashboard-container {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    
+     
+    background: linear-gradient(135deg, #f0f4f7, #e0e8f0);
+    padding: 20px;
+    margin: 0; 
+}
+
+
+.welcome-card {
+    background: white;
+    padding: 50px;
+    border-radius: 20px; 
+    width: 100%;
+    max-width: 600px; 
+    text-align: center;
+    
+     
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 
+                0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+h1 {
+    font-size: 3.5em; 
+    color: #007bff; 
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: #007bff; 
+    margin-bottom: 30px;
+}
+
+
+.cta-section {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 20px; 
+}
+
+
+.btn-primary, .btn-secondary {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-image: linear-gradient(to right, #007bff, #0056b3);
+    color: white;
+    
+    &:hover {
+        opacity: 0.9;
+        
+    }
+}
+
+
+.btn-secondary {
+    background: #e9ecef;
+    color: #495057;
+    border: 1px solid #ced4da;
+    
+    &:hover {
+        background: #ced4da;
+    }
+}

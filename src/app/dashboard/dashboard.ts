@@ -7,10 +7,18 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="dashboard-container">
-      <h1>Benvenuto</h1>
-      <p>Sei arrivato nella nostra piattaforma</p>
+      <div class="welcome-card">
+        <h1>Benvenuto!</h1>
+        <p class="subtitle">Sei arrivato nella nostra piattaforma.</p>
+        
+        <div class="cta-section">
+            <button class="btn-primary">Inizia la navigazione</button>
+            
+        </div>
+      </div>
     </div>
   `,
-
+  
+  styleUrls: ['./dashboard.scss'] 
 })
 export class DashboardComponent {}
