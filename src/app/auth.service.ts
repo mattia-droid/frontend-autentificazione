@@ -7,8 +7,7 @@ import { map, catchError } from 'rxjs/operators';
   providedIn: 'any',
 })
 export class AuthService {
-  // SOSTITUISCI QUESTO URL CON L'ENDPOINT DEL TUO COLLEGA
-  private apiUrl = 'http://localhost:5001/api/auth/login'; 
+  private apiUrl = 'https://localhost:5001/api/auth/login'; 
   private _isLogged = false;
   get isLogged() { return this._isLogged; }
   setLogged(value: boolean) { this._isLogged = value; }
@@ -24,7 +23,22 @@ export class AuthService {
         return { success, message };
       }),
       catchError(err => {
-        const errorMsg = err?.error?.message || err?.error?.error || 'Errore di rete';
+    let errorMsg = 'Errore di rete';
+
+    // se arriva un 400 con JSON: { error: "..."}
+    if (err.status === 400 && err.error?.error) {
+        errorMsg = err.error.error;
+    }
+
+    // se arriva un 401 senza body
+    else if (err.status === 401) {
+        errorMsg = 'Non autorizzato: credenziali non valide';
+    }
+
+    // altri tipi di messaggi dal server
+    else if (err.error?.message) {
+        errorMsg = err.error.message;
+    }
         return of({ success: false, message: errorMsg });
       })
     );
