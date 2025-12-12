@@ -1,32 +1,30 @@
-import { Injectable } from '@angular/core';
+// src/app/auth.interceptor.ts
+import { Observable } from 'rxjs';
 import {
-  HttpInterceptor,
+  HttpInterceptorFn,
   HttpRequest,
-  HttpHandler,
+  HttpHandlerFn,
   HttpEvent
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export const authInterceptorFn: HttpInterceptorFn = (
+  req: HttpRequest<any>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<any>> => {
+  const token = localStorage.getItem('jwt');
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    // Prende il token dal localStorage
-    const token = localStorage.getItem('jwt');
-
-    if (!token) {
-      // Se non c’è token, fai passare la richiesta così com’è
-      return next.handle(req);
-    }
-
-    // Aggiunge l’header Authorization
-    const authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    return next.handle(authReq);
+  // Se non c'è token, continua normalmente
+  if (!token) {
+    return next(req);
   }
-}
+
+  // Clona la richiesta aggiungendo l'header Authorization
+  const authReq = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  // N.B. qui si chiama next(authReq) (non next.handle)
+  return next(authReq);
+};
